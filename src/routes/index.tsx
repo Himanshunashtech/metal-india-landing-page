@@ -6,6 +6,7 @@ import {
 import { FaqWidget } from "@/components/FaqWidget";
 
 import heroImg from "@/assets/hero-galvanizing.jpg";
+import heroVideo from "@/assets/hero-bg.mp4.asset.json";
 import factoryImg from "@/assets/factory.jpg";
 import dipTankImg from "@/assets/dip-tank.jpg";
 import pipesImg from "@/assets/pipes.jpg";
@@ -82,12 +83,14 @@ function Landing() {
 
       {/* HERO */}
       <section id="top" className="relative min-h-screen flex items-center pt-16 overflow-hidden">
-        <img
-          src={heroImg}
-          alt="Hot dip galvanization at Metal India Industries"
-          width={1920}
-          height={1280}
-          className="absolute inset-0 w-full h-full object-cover opacity-40"
+        <video
+          src={heroVideo.url}
+          poster={heroImg}
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover opacity-50"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/40" />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/60" />
