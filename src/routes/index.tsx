@@ -6,6 +6,7 @@ import {
 import { FaqWidget } from "@/components/FaqWidget";
 
 import heroImg from "@/assets/hero-galvanizing.jpg";
+import heroVideo from "@/assets/hero-bg.mp4.asset.json";
 import factoryImg from "@/assets/factory.jpg";
 import dipTankImg from "@/assets/dip-tank.jpg";
 import pipesImg from "@/assets/pipes.jpg";
