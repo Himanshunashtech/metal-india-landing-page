@@ -176,12 +176,39 @@ export default function App() {
             </div>
 
             <div className="hero-animate-in grid grid-cols-3 gap-6 mt-12 pt-8 border-t border-border max-w-md">
-              {[["20+", "Years"], ["50K+", "Tonnes/yr"], ["13m", "Max length"]].map(([n, l]) => (
-                <div key={l}>
-                  <div className="text-3xl font-display font-bold molten-text">{n}</div>
-                  <div className="text-xs uppercase tracking-wider text-muted-foreground">{l}</div>
-                </div>
-              ))}
+              {[
+                { target: 10, suffix: "+", label: "Years" },
+                { target: 50, suffix: "K+", label: "Tonnes/yr" },
+                { target: 13, suffix: "m", label: "Max length" }
+              ].map((stat, i) => {
+                const [count, setCount] = useState(0);
+
+                useEffect(() => {
+                  let start = 0;
+                  const end = stat.target;
+                  const duration = 1500; // 1.5s
+                  const stepTime = Math.abs(Math.floor(duration / end));
+                  
+                  const timer = setInterval(() => {
+                    start += 1;
+                    setCount(start);
+                    if (start >= end) {
+                      clearInterval(timer);
+                    }
+                  }, stepTime);
+
+                  return () => clearInterval(timer);
+                }, [stat.target]);
+
+                return (
+                  <div key={i}>
+                    <div className="text-3xl font-display font-bold molten-text">
+                      {count}{stat.suffix}
+                    </div>
+                    <div className="text-xs uppercase tracking-wider text-muted-foreground">{stat.label}</div>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -193,15 +220,15 @@ export default function App() {
           <div className="relative">
             <img src={factoryImg} alt="Our galvanizing factory" width={1280} height={896} loading="lazy" className="rounded-lg metal-plate" />
             <div className="absolute -bottom-6 -right-6 metal-plate rivet rivet-corners p-6 pl-12 w-60">
-              <div className="text-4xl font-display font-bold molten-text">2003</div>
+              <div className="text-4xl font-display font-bold molten-text">2015</div>
               <div className="text-xs uppercase tracking-widest text-muted-foreground">Established in NCR</div>
             </div>
           </div>
           <div className="space-y-4 text-muted-foreground leading-relaxed">
             <p>
-              Founded in 2003 and headquartered at Surajpur Industrial Area, Greater Noida, Metal
+              Founded in 2015 and headquartered at Surajpur Industrial Area, Greater Noida, Metal
               India Industry is one of North India's most reliable hot dip galvanization plants.
-              For over two decades we have served power transmission, telecom, solar, infrastructure
+              For over a decade we have served power transmission, telecom, solar, infrastructure
               and fabrication majors — protecting their steel assets with a zinc coating that
               chemically bonds to the substrate and refuses to corrode.
             </p>
