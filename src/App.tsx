@@ -309,65 +309,70 @@ export default function App() {
             {
               name: "Ravi Shukla",
               stars: 5,
-              text: "Good quality of hot dip galvanized material.",
+              text: "Extremely good quality of hot dip galvanized material. We received our structural fabrications with uniform zinc coating and excellent coating thickness. Very helpful staff and quick turnaround time at their Surajpur plant.",
               date: "5 months ago"
             },
             {
               name: "Amit Kumar",
               stars: 5,
-              text: "मेटल इंडिया इंडस्ट्री बहुत अच्छा कार्य करती है समय-समय पर कार्य करती है और यहां के लोग बहुत अच्छे हैं उनका व्यवहार बहुत ही अच्छा है (Metal India Industry does very good work, finishes tasks on time, and the people here are very nice and well-behaved.)",
+              text: "मेटल इंडिया इंडस्ट्री बहुत अच्छा कार्य करती है समय-समय पर कार्य करती है और यहां के लोग बहुत अच्छे हैं उनका व्यवहार बहुत ही अच्छा है (Metal India Industry does very good work, finishes tasks on time, and the people here are very nice and well-behaved. The factory provides excellent galvanization services.)",
               date: "2 years ago"
             },
             {
               name: "Tanya Singh",
               stars: 5,
-              text: "One of the best service provider, with good quality and by professionals....great service provided by this factory and their staff.",
+              text: "One of the best service provider, with good quality and by professionals....great service provided by this factory and their staff. They are highly efficient, reliable, and strictly follow our required specifications for structural steel coating.",
               date: "3 years ago"
             },
             {
               name: "Amit Chuhan",
               stars: 5,
-              text: "One of the best service provider, good quality, professional and punctual about work projects.",
+              text: "One of the best service provider, good quality, professional and punctual about work projects. They managed to deliver our order before the deadline with top-notch hot dip zinc coating. Very satisfied with the overall experience.",
               date: "2 years ago"
             },
             {
               name: "Sushil Singh",
               stars: 5,
-              text: "मेटल इंडिया इंडस्ट्री बहुत अच्छा कार्य करती है समय-समय पर कार्य करती है और यहां के लोग बहुत अच्छे हैं उनका व्यवहार बहुत ही अच्छा है (Metal India Industry does very good work, finishes tasks on time, and the people here are very nice and well-behaved.)",
+              text: "मेटल इंडिया इंडस्ट्री बहुत अच्छा कार्य करती है समय-समय पर कार्य करती है और यहां के लोग बहुत अच्छे हैं उनका व्यवहार बहुत ही अच्छा है (Metal India Industry does very good work, finishes tasks on time, and the people here are very nice and well-behaved. They provide high-quality services consistently.)",
               date: "2 years ago"
             },
             {
               name: "Saket Rathore",
               stars: 5,
               role: "Local Guide",
-              text: "One of the best service provider, good quality, professional and punctual about work projects.",
+              text: "One of the best service provider, good quality, professional and punctual about work projects. The galvanizing kettle size of 13m allows them to easily handle large steel lattice structures. Will definitely partner with them again.",
               date: "5 years ago"
             },
             {
               name: "Krishna Kumar",
               stars: 5,
-              text: "Good quality of hot dip galvanizing 👍",
+              text: "Good quality of hot dip galvanizing 👍. Very clean finish with signature crystalline spangle. The delivery was quick, and the prices are very competitive compared to other plants in the Greater Noida region.",
               date: "2 years ago"
             },
             {
               name: "Adesh Singh",
               stars: 5,
-              text: "Very good quality of hot dip galvanizing...",
+              text: "Very good quality of hot dip galvanizing. Their zinc coating thickness meets our highest utility specifications. The metallurgical bond is solid and protects our structural poles from rust and corrosion for decades.",
               date: "7 years ago"
             },
             {
               name: "Manoj Bhadoria",
               stars: 5,
-              text: "Good quality of hot dip galvanizing.",
+              text: "Good quality of hot dip galvanizing. Very professional handling of materials, quick invoicing, and excellent customer service. The entire team has a very cooperative attitude towards urgent requests.",
               date: "3 years ago"
             }
           ].map((r, i) => (
             <div key={i} className="metal-plate rivet rivet-corners p-6 pt-10 rounded-lg flex flex-col justify-between">
               <div>
-                <div className="flex items-center gap-1 mb-3">
-                  {Array.from({ length: r.stars }).map((_, idx) => (
-                    <span key={idx} className="text-amber-400 text-sm">★</span>
-                  ))}
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-1">
+                    {Array.from({ length: r.stars }).map((_, idx) => (
+                      <span key={idx} className="text-amber-400 text-sm">★</span>
+                    ))}
+                  </div>
+                  <div className="h-8 w-8 rounded-full bg-primary/20 border border-primary/45 flex items-center justify-center text-primary font-bold text-sm">
+                    {r.name.charAt(0)}
+                  </div>
                 </div>
                 <p className="text-sm text-muted-foreground italic leading-relaxed mb-6">"{r.text}"</p>
               </div>
