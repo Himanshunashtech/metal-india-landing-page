@@ -86,11 +86,11 @@ export default function App() {
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           <a href="#top" className="flex items-center gap-2">
             <div className="h-10 w-10 rounded-md overflow-hidden border border-border bg-white">
-              <img src={logoImg} alt="Metal India Industries logo" className="h-full w-full object-cover" />
+              <img src={logoImg} alt="Metal India Industry logo" className="h-full w-full object-cover" />
             </div>
             <div>
               <div className="font-display font-bold leading-none">METAL INDIA</div>
-              <div className="text-[10px] tracking-[0.25em] text-muted-foreground">INDUSTRIES</div>
+              <div className="text-[10px] tracking-[0.25em] text-muted-foreground">INDUSTRY</div>
             </div>
           </a>
           <nav className="hidden md:flex items-center gap-7 text-sm text-muted-foreground">
@@ -148,7 +148,7 @@ export default function App() {
       </section>
 
       {/* ABOUT */}
-      <Section id="about" eyebrow="About Us" title="Metal India Industries">
+      <Section id="about" eyebrow="About Us" title="Metal India Industry">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="relative">
             <img src={factoryImg} alt="Our galvanizing factory" width={1280} height={896} loading="lazy" className="rounded-lg metal-plate" />
@@ -160,7 +160,7 @@ export default function App() {
           <div className="space-y-4 text-muted-foreground leading-relaxed">
             <p>
               Founded in 2003 and headquartered at Surajpur Industrial Area, Greater Noida, Metal
-              India Industries is one of North India's most reliable hot dip galvanization plants.
+              India Industry is one of North India's most reliable hot dip galvanization plants.
               For over two decades we have served power transmission, telecom, solar, infrastructure
               and fabrication majors — protecting their steel assets with a zinc coating that
               chemically bonds to the substrate and refuses to corrode.
@@ -247,7 +247,7 @@ export default function App() {
             <h3 className="font-display text-4xl md:text-5xl font-bold mb-4">Ashutosh Singh</h3>
             <p className="text-muted-foreground leading-relaxed mb-4">
               An engineer by training and an industrialist by conviction, Ashutosh Singh founded
-              Metal India Industries with a single belief — that Indian infrastructure deserves
+              Metal India Industry with a single belief — that Indian infrastructure deserves
               world-class corrosion protection delivered without compromise. Under his leadership
               the company has grown from a modest galvanizing shed into one of NCR's most
               respected zinc-coating plants, serving power utilities, telecom OEMs and steel
@@ -331,7 +331,7 @@ export default function App() {
                 <MapPin className="h-5 w-5 text-primary shrink-0 mt-0.5" />
                 <div>
                   <div className="font-semibold">Address</div>
-                  <div className="text-sm text-muted-foreground">Block E, Industrial Area, Surajpur,<br />Greater Noida, Uttar Pradesh 201308</div>
+                  <div className="text-sm text-muted-foreground">F-31 Site-B, Surajpur Industrial area, UPSIDC,<br />Surajpur, Greater Noida 201306</div>
                 </div>
               </div>
               <div className="flex gap-3">
@@ -345,14 +345,17 @@ export default function App() {
                 <Mail className="h-5 w-5 text-primary shrink-0 mt-0.5" />
                 <div>
                   <div className="font-semibold">Email</div>
-                  <a href="mailto:info@metalindiaindustries.in" className="text-sm text-muted-foreground hover:text-primary">info@metalindiaindustries.in</a>
+                  <a href="mailto:metalindiaindustry@gmail.com" className="text-sm text-muted-foreground hover:text-primary">metalindiaindustry@gmail.com</a>
                 </div>
               </div>
               <div className="flex gap-3">
                 <Clock className="h-5 w-5 text-primary shrink-0 mt-0.5" />
                 <div>
-                  <div className="font-semibold">Working Hours</div>
-                  <div className="text-sm text-muted-foreground">Mon – Sat · 9:00 AM – 7:00 PM</div>
+                  <div className="font-semibold">Registration Details</div>
+                  <div className="text-sm text-muted-foreground">
+                    GSTIN: 09ABIFM3909M1ZR <br />
+                    PAN: ABIFM3909M
+                  </div>
                 </div>
               </div>
             </div>
@@ -362,8 +365,8 @@ export default function App() {
           </div>
           <div className="metal-plate rounded-lg overflow-hidden min-h-[400px]">
             <iframe
-              title="Metal India Industries location"
-              src="https://www.google.com/maps?q=Block+E,+Industrial+Area,+Surajpur,+Greater+Noida,+Uttar+Pradesh+201308&output=embed"
+              title="Metal India Industry location"
+              src="https://www.google.com/maps?q=F-31+Site-B,+Surajpur+Industrial+area,+UPSIDC,+Surajpur,+Greater+Noida+201306&output=embed"
               className="w-full h-full min-h-[400px] border-0"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
@@ -393,10 +396,10 @@ export default function App() {
           <div className="md:col-span-2">
             <div className="flex items-center gap-2 mb-4">
               <div className="h-10 w-10 rounded-md overflow-hidden border border-border bg-white">
-                <img src={logoImg} alt="Metal India Industries logo" className="h-full w-full object-cover" />
+                <img src={logoImg} alt="Metal India Industry logo" className="h-full w-full object-cover" />
               </div>
               <div>
-                <div className="font-display font-bold">METAL INDIA INDUSTRIES</div>
+                <div className="font-display font-bold">METAL INDIA INDUSTRY</div>
                 <div className="text-[10px] tracking-[0.25em] text-muted-foreground">HOT DIP GALVANIZATION</div>
               </div>
             </div>
@@ -418,16 +421,16 @@ export default function App() {
           <div>
             <h4 className="font-display font-bold mb-3 text-primary">Contact</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>Block E, Surajpur Ind. Area</li>
-              <li>Greater Noida, UP 201308</li>
+              <li>F-31 Site-B, Surajpur Ind. Area</li>
+              <li>Greater Noida, UP 201306</li>
               <li><a href="tel:+919990603102" className="hover:text-primary">+91 99906 03102</a></li>
-              <li><a href="mailto:info@metalindiaindustries.in" className="hover:text-primary">info@metalindiaindustries.in</a></li>
+              <li><a href="mailto:metalindiaindustry@gmail.com" className="hover:text-primary">metalindiaindustry@gmail.com</a></li>
             </ul>
           </div>
         </div>
         <div className="border-t border-border">
           <div className="max-w-6xl mx-auto px-6 py-5 flex flex-wrap justify-between gap-3 text-xs text-muted-foreground">
-            <div>© {new Date().getFullYear()} Metal India Industries. All rights reserved.</div>
+            <div>© {new Date().getFullYear()} Metal India Industry. All rights reserved.</div>
             <div>Founded & led by Ashutosh Singh, CEO</div>
           </div>
         </div>
