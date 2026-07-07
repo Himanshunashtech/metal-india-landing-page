@@ -1,27 +1,25 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import {
   Factory, Shield, Award, Clock, Truck, Phone, Mail, MapPin,
   CheckCircle2, Flame, Layers, Wrench, Sparkles, Hammer,
 } from "lucide-react";
-import { FaqWidget } from "@/components/FaqWidget";
-import { useIsMobile } from "@/hooks/use-mobile";
+import { FaqWidget } from "./components/FaqWidget";
+import { useIsMobile } from "./hooks/use-mobile";
 
-import heroImg from "@/assets/hero-galvanizing.jpg";
-import heroVideo from "@/assets/hero-bg.mp4.asset.json";
-import factoryImg from "@/assets/factory.jpg";
-import dipTankImg from "@/assets/dip-tank.jpg";
-import pipesImg from "@/assets/pipes.jpg";
-import workerImg from "@/assets/worker.jpg";
-import towerImg from "@/assets/tower.jpg";
-import qualityImg from "@/assets/quality.jpg";
-import gratingImg from "@/assets/grating.jpg";
-import craneImg from "@/assets/crane.jpg";
-import ceoAsset from "@/assets/ceo-ashutosh.jpeg.asset.json";
-import logoAsset from "@/assets/logo.jpeg.asset.json";
+import heroImg from "./assets/hero-galvanizing.jpg";
+import factoryImg from "./assets/factory.jpg";
+import dipTankImg from "./assets/dip-tank.jpg";
+import pipesImg from "./assets/pipes.jpg";
+import workerImg from "./assets/worker.jpg";
+import towerImg from "./assets/tower.jpg";
+import qualityImg from "./assets/quality.jpg";
+import gratingImg from "./assets/grating.jpg";
+import craneImg from "./assets/crane.jpg";
+// Direct assets or fallback URLs
+const ceoImg = "/src/assets/ceo.jpeg";
+const logoImg = "/logo.png";
+const videoUrl = "https://assets.mixkit.co/videos/preview/mixkit-welder-working-in-a-welding-shop-34444-large.mp4";
 
-const ceoImg = ceoAsset.url;
-const logoImg = logoAsset.url;
 
 function HeroMedia() {
   const isMobile = useIsMobile();
@@ -29,11 +27,9 @@ function HeroMedia() {
 
   useEffect(() => {
     if (isMobile) return;
-    // Respect reduced motion & save-data preferences
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const conn = (navigator as unknown as { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
     if (reduce || conn?.saveData || (conn?.effectiveType && /2g/.test(conn.effectiveType))) return;
-    // Defer video load until after paint so LCP isn't blocked
     const t = window.setTimeout(() => setShowVideo(true), 600);
     return () => window.clearTimeout(t);
   }, [isMobile]);
@@ -49,7 +45,7 @@ function HeroMedia() {
       />
       {showVideo && (
         <video
-          src={heroVideo.url}
+          src={videoUrl}
           poster={heroImg}
           autoPlay
           loop
@@ -62,23 +58,6 @@ function HeroMedia() {
     </>
   );
 }
-
-export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "Metal India Industries — Hot Dip Galvanization, Greater Noida" },
-      { name: "description", content: "Metal India Industries delivers premium hot dip zinc galvanization in Greater Noida. ASTM-grade coatings, 13m kettle, fast turnaround. Call +91 99906 03102." },
-      { property: "og:title", content: "Metal India Industries — Hot Dip Galvanization" },
-      { property: "og:description", content: "Premium hot dip zinc galvanization services for towers, structures, pipes and fabrications across India." },
-    ],
-    links: [
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" },
-    ],
-  }),
-  component: Landing,
-});
 
 function Section({ id, eyebrow, title, children }: { id?: string; eyebrow?: string; title: string; children: React.ReactNode }) {
   return (
@@ -99,7 +78,7 @@ function Section({ id, eyebrow, title, children }: { id?: string; eyebrow?: stri
   );
 }
 
-function Landing() {
+export default function App() {
   return (
     <div className="min-h-screen">
       {/* NAV */}
@@ -133,7 +112,6 @@ function Landing() {
         <div className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/40" />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/60" />
 
-
         <div className="relative max-w-6xl mx-auto px-6 py-24 grid lg:grid-cols-2 gap-12 items-center w-full">
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/40 bg-primary/10 text-primary text-xs tracking-widest uppercase mb-6">
@@ -158,7 +136,7 @@ function Landing() {
             </div>
 
             <div className="grid grid-cols-3 gap-6 mt-12 pt-8 border-t border-border max-w-md">
-              {[["20+","Years"],["50K+","Tonnes/yr"],["13m","Max length"]].map(([n,l]) => (
+              {[["20+", "Years"], ["50K+", "Tonnes/yr"], ["13m", "Max length"]].map(([n, l]) => (
                 <div key={l}>
                   <div className="text-3xl font-display font-bold molten-text">{n}</div>
                   <div className="text-xs uppercase tracking-wider text-muted-foreground">{l}</div>
@@ -313,7 +291,7 @@ function Landing() {
               exact batch and shift in seconds.
             </p>
             <ul className="space-y-2">
-              {["Coating mass (g/m²) verified per batch","Thickness uniformity to IS 2629","Adhesion testing on representative samples","Salt-spray correlated field performance data","Full traceability and test certificates"].map(t => (
+              {["Coating mass (g/m²) verified per batch", "Thickness uniformity to IS 2629", "Adhesion testing on representative samples", "Salt-spray correlated field performance data", "Full traceability and test certificates"].map(t => (
                 <li key={t} className="flex items-start gap-2 text-sm">
                   <CheckCircle2 className="h-5 w-5 text-primary shrink-0 mt-0.5" /> {t}
                 </li>
