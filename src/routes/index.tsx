@@ -106,8 +106,8 @@ function Landing() {
       <header className="fixed top-0 inset-x-0 z-40 backdrop-blur-md bg-background/70 border-b border-border">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           <a href="#top" className="flex items-center gap-2">
-            <div className="h-9 w-9 rounded-md bg-[var(--gradient-molten)] flex items-center justify-center">
-              <Flame className="h-5 w-5 text-primary-foreground" />
+            <div className="h-10 w-10 rounded-md overflow-hidden border border-border bg-white">
+              <img src={logoImg} alt="Metal India Industries logo" className="h-full w-full object-cover" />
             </div>
             <div>
               <div className="font-display font-bold leading-none">METAL INDIA</div>
