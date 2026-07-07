@@ -16,7 +16,7 @@ import qualityImg from "./assets/quality.jpg";
 import gratingImg from "./assets/grating.jpg";
 import craneImg from "./assets/crane.jpg";
 // Direct assets or fallback URLs
-const ceoImg = "/src/assets/ceo.jpeg";
+import ceoImg from "./assets/ceo.jpeg";
 const logoImg = "/logo.png";
 const videoUrl = "https://assets.mixkit.co/videos/preview/mixkit-welder-working-in-a-welding-shop-34444-large.mp4";
 
