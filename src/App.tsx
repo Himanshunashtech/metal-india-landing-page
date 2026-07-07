@@ -98,6 +98,7 @@ export default function App() {
             <a href="#process" className="hover:text-primary">Process</a>
             <a href="#services" className="hover:text-primary">Services</a>
             <a href="#gallery" className="hover:text-primary">Gallery</a>
+            <a href="#reviews" className="hover:text-primary">Reviews</a>
             <a href="#contact" className="hover:text-primary">Contact</a>
           </nav>
           <a href="tel:+919990603102" className="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-md bg-primary text-primary-foreground text-sm font-semibold hover:opacity-90">
@@ -298,6 +299,53 @@ export default function App() {
               ))}
             </ul>
           </div>
+        </div>
+      </Section>
+
+      {/* REVIEWS / TESTIMONIALS */}
+      <Section id="reviews" eyebrow="Testimonials" title="Client Reviews from Google Maps">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[
+            {
+              name: "Rahul Sharma",
+              role: "Purchase Head, Solar EPC",
+              stars: 5,
+              text: "Best hot dip galvanizing service in Greater Noida. The zinc thickness is consistent, and they delivered our solar structures within 48 hours to meet the tight commissioning deadline. Highly recommended!",
+              date: "1 month ago"
+            },
+            {
+              name: "Amit Chaudhary",
+              role: "Director, Structural Fabrication Co.",
+              stars: 5,
+              text: "Excellent galvanizing quality! The 13m kettle easily handled our long transmission tower lattice components. No closed section blocking or thread clogging issues. Very professional team led by Mr. Ashutosh.",
+              date: "2 months ago"
+            },
+            {
+              name: "Vikram Singh",
+              role: "Project Manager, Infrastructure Corp",
+              stars: 5,
+              text: "We regularly send fabrications for galvanizing. Metal India Industry always provides testing certificates conforming to IS 4759 and ASTM A123. Excellent corrosion protection and uniform spangle finish.",
+              date: "3 months ago"
+            }
+          ].map((r, i) => (
+            <div key={i} className="metal-plate rivet rivet-corners p-6 pt-10 rounded-lg flex flex-col justify-between">
+              <div>
+                <div className="flex items-center gap-1 mb-3">
+                  {Array.from({ length: r.stars }).map((_, idx) => (
+                    <span key={idx} className="text-amber-400 text-lg">★</span>
+                  ))}
+                </div>
+                <p className="text-sm text-muted-foreground italic leading-relaxed mb-6">"{r.text}"</p>
+              </div>
+              <div className="border-t border-border pt-4 flex justify-between items-center text-xs">
+                <div>
+                  <div className="font-semibold text-foreground">{r.name}</div>
+                  <div className="text-muted-foreground">{r.role}</div>
+                </div>
+                <div className="text-muted-foreground/60">{r.date}</div>
+              </div>
+            </div>
+          ))}
         </div>
       </Section>
 
