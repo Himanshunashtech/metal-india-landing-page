@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { X } from "lucide-react";
+import { X, Send } from "lucide-react";
 
 function WhatsAppLogo({ className }: { className?: string }) {
   return (
@@ -19,87 +19,125 @@ const FAQS = [
     a: "Our largest kettle accepts components up to 13m long, 1.5m wide and 2.5m deep. Larger items can be handled via double-dipping.",
   },
   {
-    q: "What zinc coating thickness do you provide?",
-    a: "We coat to IS 4759, IS 2629 and ASTM A123 standards — typically 65–85 microns depending on steel thickness and end-use environment.",
+    q: "What zinc thickness do you provide?",
+    a: "We coat to IS 4759, IS 2629 and ASTM A123 standards — typically 65–85 microns depending on steel thickness.",
   },
   {
     q: "What is the turnaround time?",
-    a: "Standard jobs: 24–72 hours after material arrives at our Greater Noida unit. Urgent jobs can be expedited — please call +91 99906 03102.",
-  },
-  {
-    q: "Do you offer pickup and delivery?",
-    a: "Yes, we provide logistics across Delhi NCR, UP, Haryana, Punjab, Rajasthan and pan-India on request.",
-  },
-  {
-    q: "How do I get a quotation?",
-    a: "Share component drawings or weight/dimensions on WhatsApp +91 99906 03102 or email us — we revert within 2 working hours.",
+    a: "Standard jobs: 24–72 hours after material arrives. Urgent jobs can be expedited — call +91 99906 03102.",
   },
 ];
 
 export function FaqWidget() {
   const [open, setOpen] = useState(false);
-  const [selected, setSelected] = useState<number | null>(null);
+  const [inputText, setInputText] = useState("");
+
+  const handleSend = () => {
+    if (!inputText.trim()) return;
+    const url = `https://api.whatsapp.com/send?phone=919990603102&text=${encodeURIComponent(inputText)}`;
+    window.open(url, "_blank");
+    setInputText("");
+  };
+
+  const handleFAQClick = (question: string) => {
+    const url = `https://api.whatsapp.com/send?phone=919990603102&text=${encodeURIComponent(question)}`;
+    window.open(url, "_blank");
+  };
 
   return (
     <>
       <button
         onClick={() => setOpen(!open)}
         aria-label="Open chat"
-        className="fixed bottom-4 right-4 z-50 h-14 w-14 rounded-full bg-[#25D366] text-white shadow-lg flex items-center justify-center hover:scale-110 transition-transform"
+        className="fixed bottom-4 right-4 z-50 h-14 w-14 rounded-full bg-[#128C7E] text-white shadow-lg flex items-center justify-center hover:scale-110 transition-transform"
       >
         {open ? <X className="h-6 w-6" /> : <WhatsAppLogo className="h-7 w-7" />}
         {!open && (
-          <span className="absolute inset-0 rounded-full bg-[#25D366] animate-ping opacity-30" />
+          <span className="absolute inset-0 rounded-full bg-[#128C7E] animate-ping opacity-30" />
         )}
       </button>
 
       {open && (
-        <div className="fixed bottom-20 left-3 right-3 md:left-auto md:right-6 md:w-[400px] md:max-w-sm z-50 rounded-lg metal-plate overflow-hidden animate-in slide-in-from-bottom-4">
-          <div className="p-4 bg-[var(--gradient-molten)] text-primary-foreground">
-            <h4 className="font-display text-lg font-bold">Metal India Support</h4>
-            <p className="text-xs opacity-90">Typically replies in minutes</p>
+        <div className="fixed bottom-20 left-3 right-3 md:left-auto md:right-6 md:w-[380px] z-50 rounded-xl overflow-hidden shadow-2xl bg-white border border-gray-100 flex flex-col font-sans animate-in slide-in-from-bottom-4 duration-300 max-h-[calc(100vh-100px)] h-auto">
+          
+          {/* Header */}
+          <div className="bg-[#075E54] text-white p-4 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="relative h-11 w-11 rounded-full bg-[#0d7568] flex items-center justify-center font-bold text-white text-lg border border-[#ffffff40]">
+                M
+                <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-[#25D366] border-2 border-[#075E54]" />
+              </div>
+              <div>
+                <h4 className="font-bold text-sm leading-tight">Metal India Industry</h4>
+                <p className="text-[11px] text-gray-200">Online • Replies in minutes</p>
+              </div>
+            </div>
+            <button 
+              onClick={() => setOpen(false)}
+              className="text-white/80 hover:text-white hover:scale-105 transition-colors cursor-pointer"
+            >
+              <X className="h-5 w-5" />
+            </button>
           </div>
 
-          <div className="p-4 max-h-[50vh] overflow-y-auto space-y-2">
-            {selected === null ? (
-              <>
-                <p className="text-xs text-muted-foreground mb-2">Choose a question:</p>
-                {FAQS.map((f, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setSelected(i)}
-                    className="w-full text-left p-3 rounded-md bg-secondary hover:bg-accent hover:text-accent-foreground text-sm transition-colors border border-border"
-                  >
-                    {f.q}
-                  </button>
-                ))}
-              </>
-            ) : (
-              <>
-                <div className="p-3 rounded-md bg-primary/10 border border-primary/30 text-sm">
-                  <strong className="text-primary">Q:</strong> {FAQS[selected].q}
-                </div>
-                <div className="p-3 rounded-md bg-secondary text-sm leading-relaxed">
-                  {FAQS[selected].a}
-                </div>
+          {/* Chat Area */}
+          <div className="p-4 bg-[#efeae2] flex-1 min-h-[220px] max-h-[300px] md:max-h-[360px] overflow-y-auto space-y-4 flex flex-col justify-end" style={{ backgroundImage: "url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png')", backgroundSize: "cover" }}>
+            
+            {/* Message 1 */}
+            <div className="bg-white rounded-lg p-3 max-w-[85%] self-start shadow-sm relative text-xs text-gray-800">
+              <p>Namaste 🙏 Welcome to Metal India Industry.</p>
+              <span className="block text-[9px] text-gray-400 text-right mt-1">10:46 am</span>
+            </div>
+
+            {/* Message 2 */}
+            <div className="bg-white rounded-lg p-3 max-w-[85%] self-start shadow-sm relative text-xs text-gray-800">
+              <p>I am Ashutosh, your personal assistant. Ask me about our hot dip galvanizing kettle capacity, standards, pricing, or turnaround times!</p>
+              <span className="block text-[9px] text-gray-400 text-right mt-1">10:46 am</span>
+            </div>
+
+            {/* Quick Actions (FAQs) */}
+            <div className="flex flex-col gap-2 items-center pt-2">
+              {FAQS.map((faq, i) => (
                 <button
-                  onClick={() => setSelected(null)}
-                  className="text-xs text-primary hover:underline mt-2"
+                  key={i}
+                  onClick={() => handleFAQClick(faq.q)}
+                  className="bg-white border border-[#25D366] hover:bg-[#25D366]/10 text-[#075E54] text-xs font-semibold px-4 py-2 rounded-full transition-colors cursor-pointer shadow-sm text-center max-w-[95%]"
                 >
-                  ← Back to questions
+                  {faq.q}
                 </button>
-              </>
-            )}
+              ))}
+            </div>
           </div>
 
+          {/* Action Link banner */}
           <a
-            href="https://wa.me/919990603102"
+            href="https://api.whatsapp.com/send?phone=919990603102&text=Hello%20Metal%20India%20Industry%2C%20I%20have%20an%20inquiry%20regarding%20hot%20dip%20galvanizing."
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 p-3 bg-[#25D366] text-white font-medium hover:opacity-90 transition-opacity"
+            className="flex items-center justify-center gap-1.5 p-2 bg-[#E1F7EC] text-[#075E54] text-xs font-semibold hover:bg-[#d4f2e3] transition-colors border-t border-b border-[#25D366]/20"
           >
-            <WhatsAppLogo className="h-4 w-4" /> Chat on WhatsApp
+            Continue this chat on WhatsApp &rarr;
           </a>
+
+          {/* Footer Input Area */}
+          <div className="p-3 bg-[#f0f2f5] flex items-center gap-2 border-t border-gray-200">
+            <input
+              type="text"
+              placeholder="Type a message"
+              value={inputText}
+              onChange={(e) => setInputText(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleSend()}
+              className="flex-1 bg-white border-none outline-none rounded-full py-2 px-4 text-sm text-gray-700 shadow-sm"
+            />
+            <button
+              onClick={handleSend}
+              className="h-10 w-10 rounded-full bg-[#128C7E] hover:bg-[#075E54] text-white flex items-center justify-center transition-colors cursor-pointer shadow-sm shrink-0"
+              aria-label="Send message"
+            >
+              <Send className="h-4.5 w-4.5" />
+            </button>
+          </div>
+
         </div>
       )}
     </>

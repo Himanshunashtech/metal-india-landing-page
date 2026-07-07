@@ -1,8 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   Factory, Shield, Award, Clock, Truck, Phone, Mail, MapPin,
   CheckCircle2, Flame, Layers, Wrench, Sparkles, Hammer,
 } from "lucide-react";
+import { motion } from "framer-motion";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { FaqWidget } from "./components/FaqWidget";
 import { useIsMobile } from "./hooks/use-mobile";
 
@@ -20,6 +23,7 @@ import ceoImg from "./assets/ceo.jpeg";
 const logoImg = "/logo.png";
 const videoUrl = "https://assets.mixkit.co/videos/preview/mixkit-welder-working-in-a-welding-shop-34444-large.mp4";
 
+gsap.registerPlugin(ScrollTrigger);
 
 function HeroMedia() {
   const isMobile = useIsMobile();
@@ -41,6 +45,7 @@ function HeroMedia() {
         alt=""
         aria-hidden="true"
         fetchPriority="high"
+        loading="eager"
         className="absolute inset-0 w-full h-full object-cover opacity-60"
       />
       {showVideo && (
@@ -51,7 +56,7 @@ function HeroMedia() {
           loop
           muted
           playsInline
-          preload="none"
+          preload="auto"
           className="absolute inset-0 w-full h-full object-cover opacity-60 animate-in fade-in duration-1000"
         />
       )}
@@ -60,8 +65,27 @@ function HeroMedia() {
 }
 
 function Section({ id, eyebrow, title, children }: { id?: string; eyebrow?: string; title: string; children: React.ReactNode }) {
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from(sectionRef.current, {
+        opacity: 0,
+        y: 40,
+        duration: 1,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 80%",
+          toggleActions: "play none none none"
+        }
+      });
+    }, sectionRef);
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section id={id} className="relative py-20 px-6">
+    <section id={id} ref={sectionRef} className="relative py-20 px-6">
       <div className="max-w-6xl mx-auto">
         <div className="mb-10">
           {eyebrow && (
@@ -79,6 +103,21 @@ function Section({ id, eyebrow, title, children }: { id?: string; eyebrow?: stri
 }
 
 export default function App() {
+  const heroRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from(".hero-animate-in", {
+        opacity: 0,
+        y: 30,
+        stagger: 0.15,
+        duration: 1,
+        ease: "power3.out"
+      });
+    }, heroRef);
+    return () => ctx.revert();
+  }, []);
+
   return (
     <div className="min-h-screen">
       {/* NAV */}
@@ -86,7 +125,7 @@ export default function App() {
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           <a href="#top" className="flex items-center gap-2">
             <div className="h-10 w-10 rounded-md overflow-hidden border border-border bg-white">
-              <img src={logoImg} alt="Metal India Industry logo" className="h-full w-full object-cover" />
+              <img src={logoImg} alt="Metal India Industry logo" fetchPriority="high" loading="eager" className="h-full w-full object-cover" />
             </div>
             <div>
               <div className="font-display font-bold leading-none">METAL INDIA</div>
@@ -108,26 +147,26 @@ export default function App() {
       </header>
 
       {/* HERO */}
-      <section id="top" className="relative min-h-screen flex items-center pt-16 overflow-hidden">
+      <section id="top" ref={heroRef} className="relative min-h-screen flex items-center pt-16 overflow-hidden">
         <HeroMedia />
         <div className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/40" />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/60" />
 
         <div className="relative max-w-6xl mx-auto px-6 py-24 grid lg:grid-cols-2 gap-12 items-center w-full">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/40 bg-primary/10 text-primary text-xs tracking-widest uppercase mb-6">
+            <div className="hero-animate-in inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/40 bg-primary/10 text-primary text-xs tracking-widest uppercase mb-6">
               <Sparkles className="h-3 w-3" /> ISO 9001 · ASTM A123 · IS 4759
             </div>
-            <h1 className="text-5xl md:text-7xl font-display font-bold leading-[0.95] mb-6">
+            <h1 className="hero-animate-in text-5xl md:text-7xl font-display font-bold leading-[0.95] mb-6">
               FORGED IN ZINC.
               <br />
               <span className="molten-text">BUILT TO LAST.</span>
             </h1>
-            <p className="text-lg text-muted-foreground max-w-xl mb-8">
+            <p className="hero-animate-in text-lg text-muted-foreground max-w-xl mb-8">
               India's trusted hot dip galvanization partner. We immerse your steel in 99.99% pure
               molten zinc to deliver corrosion protection that outlives the structure itself.
             </p>
-            <div className="flex flex-wrap gap-4">
+            <div className="hero-animate-in flex flex-wrap gap-4">
               <a href="#contact" className="inline-flex items-center gap-2 px-6 py-3 rounded-md bg-primary text-primary-foreground font-semibold hover:opacity-90 shadow-[var(--shadow-molten)]">
                 Request a Quote <Flame className="h-4 w-4" />
               </a>
@@ -136,7 +175,7 @@ export default function App() {
               </a>
             </div>
 
-            <div className="grid grid-cols-3 gap-6 mt-12 pt-8 border-t border-border max-w-md">
+            <div className="hero-animate-in grid grid-cols-3 gap-6 mt-12 pt-8 border-t border-border max-w-md">
               {[["20+", "Years"], ["50K+", "Tonnes/yr"], ["13m", "Max length"]].map(([n, l]) => (
                 <div key={l}>
                   <div className="text-3xl font-display font-bold molten-text">{n}</div>
@@ -269,12 +308,69 @@ export default function App() {
 
       {/* GALLERY */}
       <Section id="gallery" eyebrow="Gallery" title="Inside the Plant">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          {[heroImg, factoryImg, dipTankImg, pipesImg, workerImg, towerImg, qualityImg, gratingImg, craneImg].map((src, i) => (
-            <div key={i} className={`metal-plate rounded-md overflow-hidden ${i === 0 || i === 5 ? "col-span-2 row-span-2" : ""}`}>
-              <img src={src} alt={`Plant view ${i + 1}`} loading="lazy" className="w-full h-full object-cover aspect-square hover:scale-105 transition-transform duration-500" />
-            </div>
-          ))}
+        <div className="relative">
+          {(() => {
+            const [currentIdx, setCurrentIdx] = useState(0);
+            const images = [
+              "/WhatsApp Image 2026-07-07 at 11.01.49 AM.jpeg",
+              "/WhatsApp Image 2026-07-07 at 11.01.49 AM (1).jpeg",
+              "/WhatsApp Image 2026-07-07 at 11.01.50 AM.jpeg",
+              "/WhatsApp Image 2026-07-07 at 11.01.50 AM (1).jpeg",
+              "/WhatsApp Image 2026-07-07 at 11.01.50 AM (2).jpeg",
+              "/WhatsApp Image 2026-07-07 at 11.01.51 AM.jpeg",
+              "/WhatsApp Image 2026-07-07 at 11.01.51 AM (1).jpeg",
+              "/WhatsApp Image 2026-07-07 at 11.01.51 AM (2).jpeg",
+              "/WhatsApp Image 2026-07-07 at 11.01.52 AM.jpeg"
+            ];
+
+            const nextSlide = () => {
+              setCurrentIdx((prev) => (prev + 1) % images.length);
+            };
+
+            const prevSlide = () => {
+              setCurrentIdx((prev) => (prev - 1 + images.length) % images.length);
+            };
+
+            return (
+              <div className="metal-plate rounded-lg overflow-hidden relative aspect-[16/9] max-w-4xl mx-auto shadow-2xl">
+                <img
+                  src={images[currentIdx]}
+                  alt={`Plant Gallery view ${currentIdx + 1}`}
+                  className="w-full h-full object-cover transition-all duration-500"
+                />
+                
+                {/* Navigation Arrows */}
+                <button
+                  onClick={prevSlide}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 bg-background/80 hover:bg-background border border-border text-foreground h-10 w-10 rounded-full flex items-center justify-center font-bold text-lg select-none cursor-pointer transition-colors"
+                  aria-label="Previous image"
+                >
+                  &larr;
+                </button>
+                <button
+                  onClick={nextSlide}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 bg-background/80 hover:bg-background border border-border text-foreground h-10 w-10 rounded-full flex items-center justify-center font-bold text-lg select-none cursor-pointer transition-colors"
+                  aria-label="Next image"
+                >
+                  &rarr;
+                </button>
+
+                {/* Dot Indicators */}
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+                  {images.map((_, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => setCurrentIdx(idx)}
+                      className={`h-2.5 w-2.5 rounded-full transition-all cursor-pointer ${
+                        currentIdx === idx ? "bg-primary scale-125" : "bg-muted/80 hover:bg-muted"
+                      }`}
+                      aria-label={`Go to slide ${idx + 1}`}
+                    />
+                  ))}
+                </div>
+              </div>
+            );
+          })()}
         </div>
       </Section>
 
