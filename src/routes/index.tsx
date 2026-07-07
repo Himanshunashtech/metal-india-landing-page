@@ -414,8 +414,8 @@ function Landing() {
         <div className="max-w-6xl mx-auto px-6 py-14 grid md:grid-cols-4 gap-10">
           <div className="md:col-span-2">
             <div className="flex items-center gap-2 mb-4">
-              <div className="h-9 w-9 rounded-md bg-[var(--gradient-molten)] flex items-center justify-center">
-                <Flame className="h-5 w-5 text-primary-foreground" />
+              <div className="h-10 w-10 rounded-md overflow-hidden border border-border bg-white">
+                <img src={logoImg} alt="Metal India Industries logo" className="h-full w-full object-cover" />
               </div>
               <div>
                 <div className="font-display font-bold">METAL INDIA INDUSTRIES</div>
