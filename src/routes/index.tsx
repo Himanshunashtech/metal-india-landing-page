@@ -1,9 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import {
   Factory, Shield, Award, Clock, Truck, Phone, Mail, MapPin,
   CheckCircle2, Flame, Layers, Wrench, Sparkles, Hammer,
 } from "lucide-react";
 import { FaqWidget } from "@/components/FaqWidget";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 import heroImg from "@/assets/hero-galvanizing.jpg";
 import heroVideo from "@/assets/hero-bg.mp4.asset.json";
@@ -15,7 +17,51 @@ import towerImg from "@/assets/tower.jpg";
 import qualityImg from "@/assets/quality.jpg";
 import gratingImg from "@/assets/grating.jpg";
 import craneImg from "@/assets/crane.jpg";
-import ceoImg from "@/assets/ceo.jpg";
+import ceoAsset from "@/assets/ceo-ashutosh.jpeg.asset.json";
+import logoAsset from "@/assets/logo.jpeg.asset.json";
+
+const ceoImg = ceoAsset.url;
+const logoImg = logoAsset.url;
+
+function HeroMedia() {
+  const isMobile = useIsMobile();
+  const [showVideo, setShowVideo] = useState(false);
+
+  useEffect(() => {
+    if (isMobile) return;
+    // Respect reduced motion & save-data preferences
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const conn = (navigator as unknown as { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
+    if (reduce || conn?.saveData || (conn?.effectiveType && /2g/.test(conn.effectiveType))) return;
+    // Defer video load until after paint so LCP isn't blocked
+    const t = window.setTimeout(() => setShowVideo(true), 600);
+    return () => window.clearTimeout(t);
+  }, [isMobile]);
+
+  return (
+    <>
+      <img
+        src={heroImg}
+        alt=""
+        aria-hidden="true"
+        fetchPriority="high"
+        className="absolute inset-0 w-full h-full object-cover opacity-60"
+      />
+      {showVideo && (
+        <video
+          src={heroVideo.url}
+          poster={heroImg}
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="none"
+          className="absolute inset-0 w-full h-full object-cover opacity-60 animate-in fade-in duration-1000"
+        />
+      )}
+    </>
+  );
+}
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -60,8 +106,8 @@ function Landing() {
       <header className="fixed top-0 inset-x-0 z-40 backdrop-blur-md bg-background/70 border-b border-border">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           <a href="#top" className="flex items-center gap-2">
-            <div className="h-9 w-9 rounded-md bg-[var(--gradient-molten)] flex items-center justify-center">
-              <Flame className="h-5 w-5 text-primary-foreground" />
+            <div className="h-10 w-10 rounded-md overflow-hidden border border-border bg-white">
+              <img src={logoImg} alt="Metal India Industries logo" className="h-full w-full object-cover" />
             </div>
             <div>
               <div className="font-display font-bold leading-none">METAL INDIA</div>
@@ -83,17 +129,10 @@ function Landing() {
 
       {/* HERO */}
       <section id="top" className="relative min-h-screen flex items-center pt-16 overflow-hidden">
-        <video
-          src={heroVideo.url}
-          poster={heroImg}
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover opacity-50"
-        />
+        <HeroMedia />
         <div className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/40" />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/60" />
+
 
         <div className="relative max-w-6xl mx-auto px-6 py-24 grid lg:grid-cols-2 gap-12 items-center w-full">
           <div>
@@ -375,8 +414,8 @@ function Landing() {
         <div className="max-w-6xl mx-auto px-6 py-14 grid md:grid-cols-4 gap-10">
           <div className="md:col-span-2">
             <div className="flex items-center gap-2 mb-4">
-              <div className="h-9 w-9 rounded-md bg-[var(--gradient-molten)] flex items-center justify-center">
-                <Flame className="h-5 w-5 text-primary-foreground" />
+              <div className="h-10 w-10 rounded-md overflow-hidden border border-border bg-white">
+                <img src={logoImg} alt="Metal India Industries logo" className="h-full w-full object-cover" />
               </div>
               <div>
                 <div className="font-display font-bold">METAL INDIA INDUSTRIES</div>
