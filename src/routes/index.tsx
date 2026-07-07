@@ -129,17 +129,10 @@ function Landing() {
 
       {/* HERO */}
       <section id="top" className="relative min-h-screen flex items-center pt-16 overflow-hidden">
-        <video
-          src={heroVideo.url}
-          poster={heroImg}
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover opacity-50"
-        />
+        <HeroMedia />
         <div className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/40" />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/60" />
+
 
         <div className="relative max-w-6xl mx-auto px-6 py-24 grid lg:grid-cols-2 gap-12 items-center w-full">
           <div>
