@@ -45,22 +45,22 @@ export function FaqWidget() {
       <button
         onClick={() => setOpen(!open)}
         aria-label="Open chat"
-        className="fixed bottom-6 right-6 z-50 h-14 w-14 rounded-full bg-primary text-primary-foreground shadow-[var(--shadow-molten)] flex items-center justify-center hover:scale-110 transition-transform"
+        className="fixed bottom-4 right-4 z-50 h-14 w-14 rounded-full bg-[#25D366] text-white shadow-lg flex items-center justify-center hover:scale-110 transition-transform"
       >
-        {open ? <X className="h-6 w-6" /> : <MessageCircle className="h-6 w-6" />}
+        {open ? <X className="h-6 w-6" /> : <WhatsAppLogo className="h-7 w-7" />}
         {!open && (
-          <span className="absolute inset-0 rounded-full bg-primary animate-ping opacity-30" />
+          <span className="absolute inset-0 rounded-full bg-[#25D366] animate-ping opacity-30" />
         )}
       </button>
 
       {open && (
-        <div className="fixed bottom-24 right-6 z-50 w-[92vw] max-w-sm rounded-lg metal-plate overflow-hidden animate-in slide-in-from-bottom-4">
+        <div className="fixed bottom-20 left-3 right-3 md:left-auto md:right-6 md:w-[400px] md:max-w-sm z-50 rounded-lg metal-plate overflow-hidden animate-in slide-in-from-bottom-4">
           <div className="p-4 bg-[var(--gradient-molten)] text-primary-foreground">
             <h4 className="font-display text-lg font-bold">Metal India Support</h4>
             <p className="text-xs opacity-90">Typically replies in minutes</p>
           </div>
 
-          <div className="p-4 max-h-[60vh] overflow-y-auto space-y-2">
+          <div className="p-4 max-h-[50vh] overflow-y-auto space-y-2">
             {selected === null ? (
               <>
                 <p className="text-xs text-muted-foreground mb-2">Choose a question:</p>
@@ -96,9 +96,9 @@ export function FaqWidget() {
             href="https://wa.me/919990603102"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 p-3 bg-primary text-primary-foreground font-medium hover:opacity-90 transition-opacity"
+            className="flex items-center justify-center gap-2 p-3 bg-[#25D366] text-white font-medium hover:opacity-90 transition-opacity"
           >
-            <Send className="h-4 w-4" /> Chat on WhatsApp
+            <WhatsAppLogo className="h-4 w-4" /> Chat on WhatsApp
           </a>
         </div>
       )}
