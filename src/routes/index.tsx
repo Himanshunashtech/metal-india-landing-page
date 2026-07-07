@@ -1,9 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import {
   Factory, Shield, Award, Clock, Truck, Phone, Mail, MapPin,
   CheckCircle2, Flame, Layers, Wrench, Sparkles, Hammer,
 } from "lucide-react";
 import { FaqWidget } from "@/components/FaqWidget";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 import heroImg from "@/assets/hero-galvanizing.jpg";
 import heroVideo from "@/assets/hero-bg.mp4.asset.json";
@@ -15,7 +17,51 @@ import towerImg from "@/assets/tower.jpg";
 import qualityImg from "@/assets/quality.jpg";
 import gratingImg from "@/assets/grating.jpg";
 import craneImg from "@/assets/crane.jpg";
-import ceoImg from "@/assets/ceo.jpg";
+import ceoAsset from "@/assets/ceo-ashutosh.jpeg.asset.json";
+import logoAsset from "@/assets/logo.jpeg.asset.json";
+
+const ceoImg = ceoAsset.url;
+const logoImg = logoAsset.url;
+
+function HeroMedia() {
+  const isMobile = useIsMobile();
+  const [showVideo, setShowVideo] = useState(false);
+
+  useEffect(() => {
+    if (isMobile) return;
+    // Respect reduced motion & save-data preferences
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const conn = (navigator as unknown as { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
+    if (reduce || conn?.saveData || (conn?.effectiveType && /2g/.test(conn.effectiveType))) return;
+    // Defer video load until after paint so LCP isn't blocked
+    const t = window.setTimeout(() => setShowVideo(true), 600);
+    return () => window.clearTimeout(t);
+  }, [isMobile]);
+
+  return (
+    <>
+      <img
+        src={heroImg}
+        alt=""
+        aria-hidden="true"
+        fetchPriority="high"
+        className="absolute inset-0 w-full h-full object-cover opacity-60"
+      />
+      {showVideo && (
+        <video
+          src={heroVideo.url}
+          poster={heroImg}
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="none"
+          className="absolute inset-0 w-full h-full object-cover opacity-60 animate-in fade-in duration-1000"
+        />
+      )}
+    </>
+  );
+}
 
 export const Route = createFileRoute("/")({
   head: () => ({
