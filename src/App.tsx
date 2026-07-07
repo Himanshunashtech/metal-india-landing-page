@@ -307,32 +307,66 @@ export default function App() {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[
             {
-              name: "Rahul Sharma",
-              role: "Purchase Head, Solar EPC",
+              name: "Ravi Shukla",
               stars: 5,
-              text: "Best hot dip galvanizing service in Greater Noida. The zinc thickness is consistent, and they delivered our solar structures within 48 hours to meet the tight commissioning deadline. Highly recommended!",
-              date: "1 month ago"
+              text: "Good quality of hot dip galvanized material.",
+              date: "5 months ago"
             },
             {
-              name: "Amit Chaudhary",
-              role: "Director, Structural Fabrication Co.",
+              name: "Amit Kumar",
               stars: 5,
-              text: "Excellent galvanizing quality! The 13m kettle easily handled our long transmission tower lattice components. No closed section blocking or thread clogging issues. Very professional team led by Mr. Ashutosh.",
-              date: "2 months ago"
+              text: "मेटल इंडिया इंडस्ट्री बहुत अच्छा कार्य करती है समय-समय पर कार्य करती है और यहां के लोग बहुत अच्छे हैं उनका व्यवहार बहुत ही अच्छा है (Metal India Industry does very good work, finishes tasks on time, and the people here are very nice and well-behaved.)",
+              date: "2 years ago"
             },
             {
-              name: "Vikram Singh",
-              role: "Project Manager, Infrastructure Corp",
+              name: "Tanya Singh",
               stars: 5,
-              text: "We regularly send fabrications for galvanizing. Metal India Industry always provides testing certificates conforming to IS 4759 and ASTM A123. Excellent corrosion protection and uniform spangle finish.",
-              date: "3 months ago"
+              text: "One of the best service provider, with good quality and by professionals....great service provided by this factory and their staff.",
+              date: "3 years ago"
+            },
+            {
+              name: "Amit Chuhan",
+              stars: 5,
+              text: "One of the best service provider, good quality, professional and punctual about work projects.",
+              date: "2 years ago"
+            },
+            {
+              name: "Sushil Singh",
+              stars: 5,
+              text: "मेटल इंडिया इंडस्ट्री बहुत अच्छा कार्य करती है समय-समय पर कार्य करती है और यहां के लोग बहुत अच्छे हैं उनका व्यवहार बहुत ही अच्छा है (Metal India Industry does very good work, finishes tasks on time, and the people here are very nice and well-behaved.)",
+              date: "2 years ago"
+            },
+            {
+              name: "Saket Rathore",
+              stars: 5,
+              role: "Local Guide",
+              text: "One of the best service provider, good quality, professional and punctual about work projects.",
+              date: "5 years ago"
+            },
+            {
+              name: "Krishna Kumar",
+              stars: 5,
+              text: "Good quality of hot dip galvanizing 👍",
+              date: "2 years ago"
+            },
+            {
+              name: "Adesh Singh",
+              stars: 5,
+              text: "Very good quality of hot dip galvanizing...",
+              date: "7 years ago"
+            },
+            {
+              name: "Manoj Bhadoria",
+              stars: 5,
+              text: "Good quality of hot dip galvanizing.",
+              date: "3 years ago"
             }
           ].map((r, i) => (
             <div key={i} className="metal-plate rivet rivet-corners p-6 pt-10 rounded-lg flex flex-col justify-between">
               <div>
                 <div className="flex items-center gap-1 mb-3">
                   {Array.from({ length: r.stars }).map((_, idx) => (
-                    <span key={idx} className="text-amber-400 text-lg">★</span>
+                    <span key={idx} className="text-amber-400 text-sm">★</span>
                   ))}
                 </div>
                 <p className="text-sm text-muted-foreground italic leading-relaxed mb-6">"{r.text}"</p>
@@ -340,7 +374,7 @@ export default function App() {
               <div className="border-t border-border pt-4 flex justify-between items-center text-xs">
                 <div>
                   <div className="font-semibold text-foreground">{r.name}</div>
-                  <div className="text-muted-foreground">{r.role}</div>
+                  <div className="text-muted-foreground/60">{'role' in r ? r.role : 'Verified Customer'}</div>
                 </div>
                 <div className="text-muted-foreground/60">{r.date}</div>
               </div>
