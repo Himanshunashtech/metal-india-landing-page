@@ -16,7 +16,7 @@ const FAQS = [
   },
   {
     q: "What is your maximum job size?",
-    a: "Our largest kettle accepts components up to 13m long, 1.5m wide and 2.5m deep. Larger items can be handled via double-dipping.",
+    a: "Our largest kettle accepts components up to 4m long, 1.5m wide and 2.5m deep. Larger items can be handled via double-dipping.",
   },
   {
     q: "What zinc thickness do you provide?",

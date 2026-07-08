@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import {
   Factory, Shield, Award, Clock, Truck, Phone, Mail, MapPin,
-  CheckCircle2, Flame, Layers, Wrench, Sparkles, Hammer,
+  CheckCircle2, Flame, Layers, Wrench, Sparkles, Hammer, Menu, X,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import gsap from "gsap";
@@ -64,38 +64,34 @@ function HeroMedia() {
   );
 }
 
-function Section({ id, eyebrow, title, children }: { id?: string; eyebrow?: string; title: string; children: React.ReactNode }) {
-  const sectionRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.from(sectionRef.current, {
-        opacity: 0,
-        y: 40,
-        duration: 1,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 80%",
-          toggleActions: "play none none none"
-        }
-      });
-    }, sectionRef);
-    return () => ctx.revert();
-  }, []);
-
+function ScrollReveal({ children, delay = 0, y = 40 }: { children: React.ReactNode; delay?: number; y?: number }) {
   return (
-    <section id={id} ref={sectionRef} className="relative py-20 px-6">
+    <motion.div
+      initial={{ opacity: 0, y }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.8, delay, ease: [0.25, 0.1, 0.25, 1.0] }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+function Section({ id, eyebrow, title, children }: { id?: string; eyebrow?: string; title: string; children: React.ReactNode }) {
+  return (
+    <section id={id} className="relative py-20 px-6">
       <div className="max-w-6xl mx-auto">
-        <div className="mb-10">
-          {eyebrow && (
-            <div className="flex items-center gap-3 mb-3">
-              <span className="h-px w-12 bg-primary" />
-              <span className="text-xs tracking-[0.3em] text-primary font-semibold uppercase">{eyebrow}</span>
-            </div>
-          )}
-          <h2 className="text-4xl md:text-5xl font-bold molten-text inline-block">{title}</h2>
-        </div>
+        <ScrollReveal>
+          <div className="mb-10">
+            {eyebrow && (
+              <div className="flex items-center gap-3 mb-3">
+                <span className="h-px w-12 bg-primary" />
+                <span className="text-xs tracking-[0.3em] text-primary font-semibold uppercase">{eyebrow}</span>
+              </div>
+            )}
+            <h2 className="text-4xl md:text-5xl font-bold molten-text inline-block">{title}</h2>
+          </div>
+        </ScrollReveal>
         {children}
       </div>
     </section>
@@ -104,6 +100,7 @@ function Section({ id, eyebrow, title, children }: { id?: string; eyebrow?: stri
 
 export default function App() {
   const heroRef = useRef<HTMLDivElement>(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -140,10 +137,68 @@ export default function App() {
             <a href="#reviews" className="hover:text-primary">Reviews</a>
             <a href="#contact" className="hover:text-primary">Contact</a>
           </nav>
-          <a href="tel:+919990603102" className="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-md bg-primary text-primary-foreground text-sm font-semibold hover:opacity-90">
-            <Phone className="h-4 w-4" /> Call Now
-          </a>
+
+          <div className="flex items-center gap-4">
+            <a href="tel:+919990603102" className="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-md bg-primary text-primary-foreground text-sm font-semibold hover:opacity-90">
+              <Phone className="h-4 w-4" /> Call Now
+            </a>
+
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setMobileMenuOpen(true)}
+              className="md:hidden p-2 rounded-md hover:bg-accent text-foreground transition-colors"
+              aria-label="Open menu"
+            >
+              <Menu className="h-6 w-6" />
+            </button>
+          </div>
         </div>
+
+        {/* Mobile Menu Backdrop */}
+        {mobileMenuOpen && (
+          <div
+            className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm md:hidden animate-in fade-in duration-300"
+            onClick={() => setMobileMenuOpen(false)}
+          />
+        )}
+
+        {/* Mobile Menu Drawer */}
+        {mobileMenuOpen && (
+          <div className="fixed inset-y-0 right-0 z-50 w-4/5 max-w-sm h-screen bg-background border-l border-border p-6 shadow-2xl md:hidden animate-in slide-in-from-right duration-300 flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between pb-6 border-b border-border/60">
+                <div className="flex items-center gap-2">
+                  <div className="h-8 w-8 rounded-md overflow-hidden border border-border bg-white">
+                    <img src={logoImg} alt="Metal India Industry logo" className="h-full w-full object-cover" />
+                  </div>
+                  <span className="font-display font-bold text-sm tracking-wide">METAL INDIA</span>
+                </div>
+                <button
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="p-2 rounded-md hover:bg-accent text-foreground transition-colors"
+                  aria-label="Close menu"
+                >
+                  <X className="h-6 w-6" />
+                </button>
+              </div>
+
+              <nav className="flex flex-col mt-6 space-y-2 text-base font-semibold">
+                <a href="#about" onClick={() => setMobileMenuOpen(false)} className="hover:text-primary py-3 border-b border-border/40 transition-colors">About</a>
+                <a href="#process" onClick={() => setMobileMenuOpen(false)} className="hover:text-primary py-3 border-b border-border/40 transition-colors">Process</a>
+                <a href="#services" onClick={() => setMobileMenuOpen(false)} className="hover:text-primary py-3 border-b border-border/40 transition-colors">Services</a>
+                <a href="#gallery" onClick={() => setMobileMenuOpen(false)} className="hover:text-primary py-3 border-b border-border/40 transition-colors">Gallery</a>
+                <a href="#reviews" onClick={() => setMobileMenuOpen(false)} className="hover:text-primary py-3 border-b border-border/40 transition-colors">Reviews</a>
+                <a href="#contact" onClick={() => setMobileMenuOpen(false)} className="hover:text-primary py-3 border-b border-border/40 transition-colors">Contact</a>
+              </nav>
+            </div>
+
+            <div className="pt-6 border-t border-border/60">
+              <a href="tel:+919990603102" onClick={() => setMobileMenuOpen(false)} className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-md bg-primary text-primary-foreground font-semibold hover:opacity-90 transition-opacity">
+                <Phone className="h-5 w-5" /> Call Now
+              </a>
+            </div>
+          </div>
+        )}
       </header>
 
       {/* HERO */}
@@ -152,7 +207,7 @@ export default function App() {
         <div className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/40" />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/60" />
 
-        <div className="relative max-w-6xl mx-auto px-6 py-24 grid lg:grid-cols-2 gap-12 items-center w-full">
+        <div className="relative max-w-6xl mx-auto px-6 py-6 grid lg:grid-cols-2 gap-12 items-center w-full">
           <div>
             <div className="hero-animate-in inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/40 bg-primary/10 text-primary text-xs tracking-widest uppercase mb-6">
               <Sparkles className="h-3 w-3" /> ISO 9001 · ASTM A123 · IS 4759
@@ -179,7 +234,7 @@ export default function App() {
               {[
                 { target: 10, suffix: "+", label: "Years" },
                 { target: 50, suffix: "K+", label: "Tonnes/yr" },
-                { target: 13, suffix: "m", label: "Max length" }
+                { target: 4, suffix: "m", label: "Max length" }
               ].map((stat, i) => {
                 const [count, setCount] = useState(0);
 
@@ -188,7 +243,7 @@ export default function App() {
                   const end = stat.target;
                   const duration = 1500; // 1.5s
                   const stepTime = Math.abs(Math.floor(duration / end));
-                  
+
                   const timer = setInterval(() => {
                     start += 1;
                     setCount(start);
@@ -217,28 +272,32 @@ export default function App() {
       {/* ABOUT */}
       <Section id="about" eyebrow="About Us" title="Metal India Industry">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <div className="relative">
-            <img src={factoryImg} alt="Our galvanizing factory" width={1280} height={896} loading="lazy" className="rounded-lg metal-plate" />
-            <div className="absolute -bottom-6 -right-6 metal-plate rivet rivet-corners p-6 pl-12 w-60">
-              <div className="text-4xl font-display font-bold molten-text">2015</div>
-              <div className="text-xs uppercase tracking-widest text-muted-foreground">Established in NCR</div>
+          <ScrollReveal>
+            <div className="relative">
+              <img src={factoryImg} alt="Our galvanizing factory" width={1280} height={896} loading="lazy" className="rounded-lg metal-plate" />
+              <div className="absolute -bottom-6 -right-6 metal-plate rivet rivet-corners p-6 pl-12 w-60">
+                <div className="text-4xl font-display font-bold molten-text">2015</div>
+                <div className="text-xs uppercase tracking-widest text-muted-foreground">Established in NCR</div>
+              </div>
             </div>
-          </div>
-          <div className="space-y-4 text-muted-foreground leading-relaxed">
-            <p>
-              Founded in 2015 and headquartered at Surajpur Industrial Area, Greater Noida, Metal
-              India Industry is one of North India's most reliable hot dip galvanization plants.
-              For over a decade we have served power transmission, telecom, solar, infrastructure
-              and fabrication majors — protecting their steel assets with a zinc coating that
-              chemically bonds to the substrate and refuses to corrode.
-            </p>
-            <p>
-              Our facility runs a 13-metre kettle, automated jib cranes, in-house chemical pre-
-              treatment, and a NABL-aligned testing lab. Every consignment leaves the plant only
-              after thickness, adhesion and visual checks. From a single bracket to a full
-              transmission tower, we treat each component as a long-life investment.
-            </p>
-          </div>
+          </ScrollReveal>
+          <ScrollReveal delay={0.2}>
+            <div className="space-y-4 text-muted-foreground leading-relaxed">
+              <p>
+                Founded in 2015 and headquartered at Surajpur Industrial Area, Greater Noida, Metal
+                India Industry is one of North India's most reliable hot dip galvanization plants.
+                For over a decade we have served power transmission, telecom, solar, infrastructure
+                and fabrication majors — protecting their steel assets with a zinc coating that
+                chemically bonds to the substrate and refuses to corrode.
+              </p>
+              <p>
+                Our facility runs a 4-metre kettle, automated jib cranes, in-house chemical pre-
+                treatment, and a NABL-aligned testing lab. Every consignment leaves the plant only
+                after thickness, adhesion and visual checks. From a single bracket to a full
+                transmission tower, we treat each component as a long-life investment.
+              </p>
+            </div>
+          </ScrollReveal>
         </div>
       </Section>
 
@@ -252,12 +311,14 @@ export default function App() {
             { icon: Factory, t: "4. Hot Dip Galvanizing", d: "Steel is lowered into molten zinc at 450°C. A metallurgical reaction grows three iron-zinc alloy layers topped by pure zinc — a coat that becomes part of the steel itself." },
             { icon: Hammer, t: "5. Quenching & Passivation", d: "On withdrawal, parts are quenched in a passivation solution that locks in the coating and minimises early-life white rust. Surfaces emerge with the signature crystalline spangle." },
             { icon: Award, t: "6. Inspection & Dispatch", d: "Every piece is gauged for coating thickness and adhesion. Documentation is issued to IS 4759 / ASTM A123 and material is packed, slung and dispatched to your site." },
-          ].map((s) => (
-            <div key={s.t} className="metal-plate rivet rivet-corners p-6 pt-12 rounded-lg hover:-translate-y-1 transition-transform">
-              <s.icon className="h-8 w-8 text-primary mb-3" />
-              <h3 className="font-display text-xl font-bold mb-2">{s.t}</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">{s.d}</p>
-            </div>
+          ].map((s, idx) => (
+            <ScrollReveal key={s.t} delay={idx * 0.1}>
+              <div className="metal-plate rivet rivet-corners p-6 pt-12 rounded-lg hover:-translate-y-1 transition-transform h-full">
+                <s.icon className="h-8 w-8 text-primary mb-3" />
+                <h3 className="font-display text-xl font-bold mb-2">{s.t}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{s.d}</p>
+              </div>
+            </ScrollReveal>
           ))}
         </div>
       </Section>
@@ -267,19 +328,21 @@ export default function App() {
         <div className="grid md:grid-cols-2 gap-6">
           {[
             { img: towerImg, t: "Transmission Towers & Poles", d: "Lattice towers, monopoles, sub-station structures and earthing strips — galvanized to PGCIL and state utility specifications. We hold tolerances on bolt-holes, gussets and angles so site assembly never stalls." },
-            { img: pipesImg, t: "Pipes, Tubes & Conduits", d: "MS pipes, GI conduits, scaffolding tubes and structural hollows up to 13 metres. Threaded ends and pre-fitted couplers are protected by our blow-out routine for clean, threadable surfaces." },
+            { img: pipesImg, t: "Pipes, Tubes & Conduits", d: "MS pipes, GI conduits, scaffolding tubes and structural hollows up to 4 metres. Threaded ends and pre-fitted couplers are protected by our blow-out routine for clean, threadable surfaces." },
             { img: gratingImg, t: "Gratings, Handrails & Walkways", d: "Industrial platforms, cable trays, gratings and stair treads finished in a uniform spangle. We galvanize fully fabricated assemblies so welded joints get the same 70+ micron protection." },
             { img: craneImg, t: "Structural Fabrications", d: "Bridge components, solar mounting structures, agricultural implements and custom fabrications. Single pieces up to 8 tonnes are handled by our overhead crane and double-dip line." },
-          ].map((s) => (
-            <article key={s.t} className="metal-plate rounded-lg overflow-hidden group">
-              <div className="aspect-[16/10] overflow-hidden">
-                <img src={s.img} alt={s.t} width={1280} height={896} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-              </div>
-              <div className="p-6">
-                <h3 className="font-display text-2xl font-bold mb-2">{s.t}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{s.d}</p>
-              </div>
-            </article>
+          ].map((s, idx) => (
+            <ScrollReveal key={s.t} delay={idx * 0.1}>
+              <article className="metal-plate rounded-lg overflow-hidden group h-full">
+                <div className="aspect-[16/10] overflow-hidden">
+                  <img src={s.img} alt={s.t} width={1280} height={896} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                </div>
+                <div className="p-6">
+                  <h3 className="font-display text-2xl font-bold mb-2">{s.t}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{s.d}</p>
+                </div>
+              </article>
+            </ScrollReveal>
           ))}
         </div>
       </Section>
@@ -292,12 +355,14 @@ export default function App() {
             { icon: Clock, t: "Fast Turnaround", d: "Most consignments are pre-treated, dipped, inspected and dispatched within 24–72 hours of arrival. We run dedicated express lines for utility customers working against energisation deadlines." },
             { icon: Award, t: "Certified Quality", d: "Compliant with IS 4759, IS 2629, ASTM A123 and BS EN ISO 1461. Every batch ships with mill-style test certificates covering coating mass, thickness, adhesion and uniformity." },
             { icon: Truck, t: "Pan-India Logistics", d: "Our in-house fleet plus tied-up transporters move galvanized stock across Delhi NCR, Punjab, Haryana, Rajasthan, UP, Bihar and central India. Site delivery scheduling on request." },
-          ].map((s) => (
-            <div key={s.t} className="metal-plate p-6 rounded-lg">
-              <s.icon className="h-8 w-8 text-primary mb-3" />
-              <h3 className="font-display text-lg font-bold mb-2">{s.t}</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">{s.d}</p>
-            </div>
+          ].map((s, idx) => (
+            <ScrollReveal key={s.t} delay={idx * 0.1}>
+              <div className="metal-plate p-6 rounded-lg h-full">
+                <s.icon className="h-8 w-8 text-primary mb-3" />
+                <h3 className="font-display text-lg font-bold mb-2">{s.t}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{s.d}</p>
+              </div>
+            </ScrollReveal>
           ))}
         </div>
       </Section>
@@ -306,29 +371,33 @@ export default function App() {
       <Section id="owner" eyebrow="Leadership" title="Meet the Founder">
         <div className="grid lg:grid-cols-5 gap-10 items-center">
           <div className="lg:col-span-2 relative">
-            <div className="absolute inset-4 bg-[var(--gradient-molten)] rounded-lg blur-2xl opacity-30" />
-            <img src={ceoImg} alt="Ashutosh Singh, CEO" width={1024} height={1280} loading="lazy" className="relative rounded-lg metal-plate w-full" />
+            <ScrollReveal>
+              <div className="absolute inset-4 bg-[var(--gradient-molten)] rounded-lg blur-2xl opacity-30" />
+              <img src={ceoImg} alt="Ashutosh Singh, CEO" width={1024} height={1280} loading="lazy" className="relative rounded-lg metal-plate w-full" />
+            </ScrollReveal>
           </div>
           <div className="lg:col-span-3">
-            <div className="text-xs tracking-[0.3em] text-primary uppercase mb-2">Founder & CEO</div>
-            <h3 className="font-display text-4xl md:text-5xl font-bold mb-4">Ashutosh Singh</h3>
-            <p className="text-muted-foreground leading-relaxed mb-4">
-              An engineer by training and an industrialist by conviction, Ashutosh Singh founded
-              Metal India Industry with a single belief — that Indian infrastructure deserves
-              world-class corrosion protection delivered without compromise. Under his leadership
-              the company has grown from a modest galvanizing shed into one of NCR's most
-              respected zinc-coating plants, serving power utilities, telecom OEMs and steel
-              fabricators across the country.
-            </p>
-            <p className="text-muted-foreground leading-relaxed mb-6">
-              He personally oversees plant operations, customer relationships and the firm's
-              continuing investment in cleaner pre-treatment chemistry, energy-efficient kettles
-              and worker safety. For Ashutosh, every dipped component is a quiet promise that the
-              tower, bridge or structure it becomes will still be standing strong decades from now.
-            </p>
-            <blockquote className="border-l-2 border-primary pl-4 italic text-foreground/90">
-              "We don't sell galvanizing. We sell decades of uninterrupted service life."
-            </blockquote>
+            <ScrollReveal delay={0.2}>
+              <div className="text-xs tracking-[0.3em] text-primary uppercase mb-2">Founder & CEO</div>
+              <h3 className="font-display text-4xl md:text-5xl font-bold mb-4">Ashutosh Singh</h3>
+              <p className="text-muted-foreground leading-relaxed mb-4">
+                An engineer by training and an industrialist by conviction, Ashutosh Singh founded
+                Metal India Industry with a single belief — that Indian infrastructure deserves
+                world-class corrosion protection delivered without compromise. Under his leadership
+                the company has grown from a modest galvanizing shed into one of NCR's most
+                respected zinc-coating plants, serving power utilities, telecom OEMs and steel
+                fabricators across the country.
+              </p>
+              <p className="text-muted-foreground leading-relaxed mb-6">
+                He personally oversees plant operations, customer relationships and the firm's
+                continuing investment in cleaner pre-treatment chemistry, energy-efficient kettles
+                and worker safety. For Ashutosh, every dipped component is a quiet promise that the
+                tower, bridge or structure it becomes will still be standing strong decades from now.
+              </p>
+              <blockquote className="border-l-2 border-primary pl-4 italic text-foreground/90">
+                "We don't sell galvanizing. We sell decades of uninterrupted service life."
+              </blockquote>
+            </ScrollReveal>
           </div>
         </div>
       </Section>
@@ -359,43 +428,44 @@ export default function App() {
             };
 
             return (
-              <div className="metal-plate rounded-lg overflow-hidden relative aspect-[16/9] max-w-4xl mx-auto shadow-2xl">
-                <img
-                  src={images[currentIdx]}
-                  alt={`Plant Gallery view ${currentIdx + 1}`}
-                  className="w-full h-full object-cover transition-all duration-500"
-                />
-                
-                {/* Navigation Arrows */}
-                <button
-                  onClick={prevSlide}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 bg-background/80 hover:bg-background border border-border text-foreground h-10 w-10 rounded-full flex items-center justify-center font-bold text-lg select-none cursor-pointer transition-colors"
-                  aria-label="Previous image"
-                >
-                  &larr;
-                </button>
-                <button
-                  onClick={nextSlide}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 bg-background/80 hover:bg-background border border-border text-foreground h-10 w-10 rounded-full flex items-center justify-center font-bold text-lg select-none cursor-pointer transition-colors"
-                  aria-label="Next image"
-                >
-                  &rarr;
-                </button>
+              <ScrollReveal>
+                <div className="metal-plate rounded-lg overflow-hidden relative aspect-[16/9] max-w-4xl mx-auto shadow-2xl">
+                  <img
+                    src={images[currentIdx]}
+                    alt={`Plant Gallery view ${currentIdx + 1}`}
+                    className="w-full h-full object-cover transition-all duration-500"
+                  />
 
-                {/* Dot Indicators */}
-                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-                  {images.map((_, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => setCurrentIdx(idx)}
-                      className={`h-2.5 w-2.5 rounded-full transition-all cursor-pointer ${
-                        currentIdx === idx ? "bg-primary scale-125" : "bg-muted/80 hover:bg-muted"
-                      }`}
-                      aria-label={`Go to slide ${idx + 1}`}
-                    />
-                  ))}
+                  {/* Navigation Arrows */}
+                  <button
+                    onClick={prevSlide}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 bg-background/80 hover:bg-background border border-border text-foreground h-10 w-10 rounded-full flex items-center justify-center font-bold text-lg select-none cursor-pointer transition-colors"
+                    aria-label="Previous image"
+                  >
+                    &larr;
+                  </button>
+                  <button
+                    onClick={nextSlide}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 bg-background/80 hover:bg-background border border-border text-foreground h-10 w-10 rounded-full flex items-center justify-center font-bold text-lg select-none cursor-pointer transition-colors"
+                    aria-label="Next image"
+                  >
+                    &rarr;
+                  </button>
+
+                  {/* Dot Indicators */}
+                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+                    {images.map((_, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => setCurrentIdx(idx)}
+                        className={`h-2.5 w-2.5 rounded-full transition-all cursor-pointer ${currentIdx === idx ? "bg-primary scale-125" : "bg-muted/80 hover:bg-muted"
+                          }`}
+                        aria-label={`Go to slide ${idx + 1}`}
+                      />
+                    ))}
+                  </div>
                 </div>
-              </div>
+              </ScrollReveal>
             );
           })()}
         </div>
@@ -404,24 +474,28 @@ export default function App() {
       {/* QUALITY */}
       <Section eyebrow="Quality" title="Tested Beyond the Spec">
         <div className="grid lg:grid-cols-2 gap-10 items-center">
-          <img src={qualityImg} alt="In-house quality lab" width={1280} height={896} loading="lazy" className="rounded-lg metal-plate" />
-          <div className="space-y-4">
-            <p className="text-muted-foreground leading-relaxed">
-              Quality at Metal India is not a final stage — it is a discipline that runs through
-              degreasing, pickling, fluxing, dipping and dispatch. Our in-house laboratory uses
-              digital elcometers, magnetic thickness gauges, sulphate-of-copper adhesion sets and
-              visual standards aligned with IS 2633 and ASTM A123. Every consignment is sampled,
-              recorded and traced to a heat number, so any future query can be answered to the
-              exact batch and shift in seconds.
-            </p>
-            <ul className="space-y-2">
-              {["Coating mass (g/m²) verified per batch", "Thickness uniformity to IS 2629", "Adhesion testing on representative samples", "Salt-spray correlated field performance data", "Full traceability and test certificates"].map(t => (
-                <li key={t} className="flex items-start gap-2 text-sm">
-                  <CheckCircle2 className="h-5 w-5 text-primary shrink-0 mt-0.5" /> {t}
-                </li>
-              ))}
-            </ul>
-          </div>
+          <ScrollReveal>
+            <img src={qualityImg} alt="In-house quality lab" width={1280} height={896} loading="lazy" className="rounded-lg metal-plate" />
+          </ScrollReveal>
+          <ScrollReveal delay={0.2}>
+            <div className="space-y-4">
+              <p className="text-muted-foreground leading-relaxed">
+                Quality at Metal India is not a final stage — it is a discipline that runs through
+                degreasing, pickling, fluxing, dipping and dispatch. Our in-house laboratory uses
+                digital elcometers, magnetic thickness gauges, sulphate-of-copper adhesion sets and
+                visual standards aligned with IS 2633 and ASTM A123. Every consignment is sampled,
+                recorded and traced to a heat number, so any future query can be answered to the
+                exact batch and shift in seconds.
+              </p>
+              <ul className="space-y-2">
+                {["Coating mass (g/m²) verified per batch", "Thickness uniformity to IS 2629", "Adhesion testing on representative samples", "Salt-spray correlated field performance data", "Full traceability and test certificates"].map(t => (
+                  <li key={t} className="flex items-start gap-2 text-sm">
+                    <CheckCircle2 className="h-5 w-5 text-primary shrink-0 mt-0.5" /> {t}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </ScrollReveal>
         </div>
       </Section>
 
@@ -463,7 +537,7 @@ export default function App() {
               name: "Saket Rathore",
               stars: 5,
               role: "Local Guide",
-              text: "One of the best service provider, good quality, professional and punctual about work projects. The galvanizing kettle size of 13m allows them to easily handle large steel lattice structures. Will definitely partner with them again.",
+              text: "One of the best service provider, good quality, professional and punctual about work projects. The galvanizing kettle size of 4m allows them to easily handle steel lattice structures. Will definitely partner with them again.",
               date: "5 years ago"
             },
             {
@@ -485,28 +559,30 @@ export default function App() {
               date: "3 years ago"
             }
           ].map((r, i) => (
-            <div key={i} className="metal-plate rivet rivet-corners p-6 pt-10 rounded-lg flex flex-col justify-between">
-              <div>
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center gap-1">
-                    {Array.from({ length: r.stars }).map((_, idx) => (
-                      <span key={idx} className="text-amber-400 text-sm">★</span>
-                    ))}
-                  </div>
-                  <div className="h-8 w-8 rounded-full bg-primary/20 border border-primary/45 flex items-center justify-center text-primary font-bold text-sm">
-                    {r.name.charAt(0)}
-                  </div>
-                </div>
-                <p className="text-sm text-muted-foreground italic leading-relaxed mb-6">"{r.text}"</p>
-              </div>
-              <div className="border-t border-border pt-4 flex justify-between items-center text-xs">
+            <ScrollReveal key={i} delay={i * 0.1}>
+              <div className="metal-plate rivet rivet-corners p-6 pt-10 rounded-lg flex flex-col justify-between h-full">
                 <div>
-                  <div className="font-semibold text-foreground">{r.name}</div>
-                  <div className="text-muted-foreground/60">{'role' in r ? r.role : 'Verified Customer'}</div>
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-1">
+                      {Array.from({ length: r.stars }).map((_, idx) => (
+                        <span key={idx} className="text-amber-400 text-sm">★</span>
+                      ))}
+                    </div>
+                    <div className="h-8 w-8 rounded-full bg-primary/20 border border-primary/45 flex items-center justify-center text-primary font-bold text-sm">
+                      {r.name.charAt(0)}
+                    </div>
+                  </div>
+                  <p className="text-sm text-muted-foreground italic leading-relaxed mb-6">"{r.text}"</p>
                 </div>
-                <div className="text-muted-foreground/60">{r.date}</div>
+                <div className="border-t border-border pt-4 flex justify-between items-center text-xs">
+                  <div>
+                    <div className="font-semibold text-foreground">{r.name}</div>
+                    <div className="text-muted-foreground/60">{'role' in r ? r.role : 'Verified Customer'}</div>
+                  </div>
+                  <div className="text-muted-foreground/60">{r.date}</div>
+                </div>
               </div>
-            </div>
+            </ScrollReveal>
           ))}
         </div>
       </Section>
@@ -519,11 +595,13 @@ export default function App() {
             { t: "Pricing & Payment", d: "Pricing is quoted in INR per kilogram of finished galvanized weight unless agreed otherwise. Quotations are valid for 15 days subject to zinc price stability. Standard terms are 50% advance and balance against pro-forma invoice before dispatch; credit terms are extended to approved long-standing customers only." },
             { t: "Coating Standards", d: "Unless otherwise specified, work is executed to IS 4759 / IS 2629 / ASTM A123. Customers requiring specific coating mass, dual coatings or post-treatment must indicate this on the PO. Coating thickness is a function of steel chemistry and section thickness as governed by the relevant standard." },
             { t: "Liability & Claims", d: "Claims regarding coating quality must be raised in writing within 7 days of receipt with supporting photographs and test data. Our liability is limited to re-galvanization of defective pieces at our works. We are not liable for consequential losses, defects arising from inappropriate steel chemistry or for damage caused by post-galvanizing fabrication." },
-          ].map(s => (
-            <div key={s.t} className="metal-plate p-6 rounded-lg">
-              <h3 className="font-display text-xl font-bold mb-2 text-primary">{s.t}</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">{s.d}</p>
-            </div>
+          ].map((s, idx) => (
+            <ScrollReveal key={s.t} delay={idx * 0.1}>
+              <div className="metal-plate p-6 rounded-lg h-full">
+                <h3 className="font-display text-xl font-bold mb-2 text-primary">{s.t}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{s.d}</p>
+              </div>
+            </ScrollReveal>
           ))}
         </div>
       </Section>
@@ -531,73 +609,79 @@ export default function App() {
       {/* CONTACT + MAP */}
       <Section id="contact" eyebrow="Visit Us" title="Greater Noida Plant">
         <div className="grid lg:grid-cols-2 gap-6">
-          <div className="metal-plate rounded-lg p-8 space-y-6">
-            <p className="text-muted-foreground leading-relaxed">
-              Our plant gates are open Monday to Saturday. Walk in for a facility tour, drop
-              drawings for a quote, or simply call our team for a same-day price indication.
-            </p>
-            <div className="space-y-4">
-              <div className="flex gap-3">
-                <MapPin className="h-5 w-5 text-primary shrink-0 mt-0.5" />
-                <div>
-                  <div className="font-semibold">Address</div>
-                  <div className="text-sm text-muted-foreground">F-31 Site-B, Surajpur Industrial area, UPSIDC,<br />Surajpur, Greater Noida 201306</div>
+          <ScrollReveal>
+            <div className="metal-plate rounded-lg p-8 space-y-6 h-full">
+              <p className="text-muted-foreground leading-relaxed">
+                Our plant gates are open Monday to Saturday. Walk in for a facility tour, drop
+                drawings for a quote, or simply call our team for a same-day price indication.
+              </p>
+              <div className="space-y-4">
+                <div className="flex gap-3">
+                  <MapPin className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                  <div>
+                    <div className="font-semibold">Address</div>
+                    <div className="text-sm text-muted-foreground">F-31 Site-B, Surajpur Industrial area, UPSIDC,<br />Surajpur, Greater Noida 201306</div>
+                  </div>
                 </div>
-              </div>
-              <div className="flex gap-3">
-                <Phone className="h-5 w-5 text-primary shrink-0 mt-0.5" />
-                <div>
-                  <div className="font-semibold">Phone</div>
-                  <a href="tel:+919990603102" className="text-sm text-muted-foreground hover:text-primary">+91 99906 03102</a>
+                <div className="flex gap-3">
+                  <Phone className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                  <div>
+                    <div className="font-semibold">Phone</div>
+                    <a href="tel:+919990603102" className="text-sm text-muted-foreground hover:text-primary">+91 99906 03102</a>
+                  </div>
                 </div>
-              </div>
-              <div className="flex gap-3">
-                <Mail className="h-5 w-5 text-primary shrink-0 mt-0.5" />
-                <div>
-                  <div className="font-semibold">Email</div>
-                  <a href="mailto:metalindiaindustry@gmail.com" className="text-sm text-muted-foreground hover:text-primary">metalindiaindustry@gmail.com</a>
+                <div className="flex gap-3">
+                  <Mail className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                  <div>
+                    <div className="font-semibold">Email</div>
+                    <a href="mailto:metalindiaindustry@gmail.com" className="text-sm text-muted-foreground hover:text-primary">metalindiaindustry@gmail.com</a>
+                  </div>
                 </div>
-              </div>
-              <div className="flex gap-3">
-                <Clock className="h-5 w-5 text-primary shrink-0 mt-0.5" />
-                <div>
-                  <div className="font-semibold">Registration Details</div>
-                  <div className="text-sm text-muted-foreground">
-                    GSTIN: 09ABIFM3909M1ZR <br />
-                    PAN: ABIFM3909M
+                <div className="flex gap-3">
+                  <Clock className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                  <div>
+                    <div className="font-semibold">Registration Details</div>
+                    <div className="text-sm text-muted-foreground">
+                      GSTIN: 09ABIFM3909M1ZR <br />
+                      PAN: ABIFM3909M
+                    </div>
                   </div>
                 </div>
               </div>
+              <a href="https://wa.me/919990603102" className="inline-flex items-center gap-2 px-5 py-3 rounded-md bg-primary text-primary-foreground font-semibold hover:opacity-90 shadow-[var(--shadow-molten)]">
+                <Phone className="h-4 w-4" /> WhatsApp Us
+              </a>
             </div>
-            <a href="https://wa.me/919990603102" className="inline-flex items-center gap-2 px-5 py-3 rounded-md bg-primary text-primary-foreground font-semibold hover:opacity-90 shadow-[var(--shadow-molten)]">
-              <Phone className="h-4 w-4" /> WhatsApp Us
-            </a>
-          </div>
-          <div className="metal-plate rounded-lg overflow-hidden min-h-[400px]">
-            <iframe
-              title="Metal India Industry location"
-              src="https://www.google.com/maps?q=F-31+Site-B,+Surajpur+Industrial+area,+UPSIDC,+Surajpur,+Greater+Noida+201306&output=embed"
-              className="w-full h-full min-h-[400px] border-0"
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            />
-          </div>
+          </ScrollReveal>
+          <ScrollReveal delay={0.2}>
+            <div className="metal-plate rounded-lg overflow-hidden min-h-[400px] h-full">
+              <iframe
+                title="Metal India Industry location"
+                src="https://www.google.com/maps?q=F-31+Site-B,+Surajpur+Industrial+area,+UPSIDC,+Surajpur,+Greater+Noida+201306&output=embed"
+                className="w-full h-full min-h-[400px] border-0"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            </div>
+          </ScrollReveal>
         </div>
       </Section>
 
       {/* CTA */}
       <section className="py-20 px-6">
-        <div className="max-w-5xl mx-auto metal-plate rivet rivet-corners rounded-lg p-12 text-center relative overflow-hidden">
-          <div className="absolute inset-0 bg-[var(--gradient-molten)] opacity-10" />
-          <h2 className="relative font-display text-3xl md:text-5xl font-bold mb-4">Ready to protect your steel?</h2>
-          <p className="relative text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Send us your component list or drawings. We will revert with a transparent per-kilogram
-            quotation and a realistic turnaround within two working hours.
-          </p>
-          <a href="tel:+919990603102" className="relative inline-flex items-center gap-2 px-8 py-4 rounded-md bg-primary text-primary-foreground font-semibold hover:opacity-90 shadow-[var(--shadow-molten)]">
-            <Phone className="h-4 w-4" /> +91 99906 03102
-          </a>
-        </div>
+        <ScrollReveal>
+          <div className="max-w-5xl mx-auto metal-plate rivet rivet-corners rounded-lg p-12 text-center relative overflow-hidden">
+            <div className="absolute inset-0 bg-[var(--gradient-molten)] opacity-10" />
+            <h2 className="relative font-display text-3xl md:text-5xl font-bold mb-4">Ready to protect your steel?</h2>
+            <p className="relative text-muted-foreground mb-8 max-w-2xl mx-auto">
+              Send us your component list or drawings. We will revert with a transparent per-kilogram
+              quotation and a realistic turnaround within two working hours.
+            </p>
+            <a href="tel:+919990603102" className="relative inline-flex items-center gap-2 px-8 py-4 rounded-md bg-primary text-primary-foreground font-semibold hover:opacity-90 shadow-[var(--shadow-molten)]">
+              <Phone className="h-4 w-4" /> +91 99906 03102
+            </a>
+          </div>
+        </ScrollReveal>
       </section>
 
       {/* FOOTER */}
