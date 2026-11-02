@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import {
   Factory, Shield, Award, Clock, Truck, Phone, Mail, MapPin,
-  CheckCircle2, Flame, Layers, Wrench, Sparkles, Hammer, Menu, X,
+  CheckCircle2, Flame, Layers, Wrench, Sparkles, Hammer, Menu, X, MessageCircle,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import gsap from "gsap";
@@ -728,7 +728,46 @@ export default function App() {
             <div>Founded & led by Ashutosh Singh, CEO</div>
           </div>
         </div>
-      </footer>
+            <div className="border-t border-slate-800 bg-[#0B1522] py-4 text-slate-300">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs sm:text-sm">
+            <div className="flex items-center justify-center sm:justify-start text-center sm:text-left">
+              <span className="text-slate-300">
+                This website is built by{" "}
+                <a
+                  href="https://solobuilder.netlify.app/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-bold text-white hover:text-orange-400 transition-colors underline decoration-orange-500/60 hover:decoration-orange-400"
+                >
+                  Sharma Cloud Technologies
+                </a>
+              </span>
+            </div>
+
+            <div className="flex flex-wrap items-center justify-center gap-4 text-xs">
+              <a
+                href="tel:9540520779"
+                className="inline-flex items-center gap-1.5 font-bold text-slate-100 hover:text-emerald-400 transition-colors"
+              >
+                <Phone className="h-3.5 w-3.5 text-emerald-400" />
+                <span>+91 95405 20779</span>
+              </a>
+              <span className="text-slate-700 hidden sm:inline">|</span>
+              <a
+                href="https://wa.me/919540520779?text=Hello%20Sharma%20Cloud%20Technologies%2C%20I%20saw%20your%20work%20on%20Radha%20Rani%20Solar."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 font-medium text-slate-300 hover:text-emerald-400 transition-colors"
+              >
+                <MessageCircle className="h-3.5 w-3.5 text-emerald-400" />
+                <span>WhatsApp</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
 
       <FaqWidget />
     </div>
